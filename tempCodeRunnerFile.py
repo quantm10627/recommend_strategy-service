@@ -1,1 +1,0 @@
-rted_product(df))

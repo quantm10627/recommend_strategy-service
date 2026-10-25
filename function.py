@@ -69,3 +69,5 @@ def chatbot_recomment (df_topproduct):
 
     response = model.generate_content(prompt)
     return response.text
+
+# 5 Xuất file báo cáo về doanh thu và số lượng

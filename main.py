@@ -1,8 +1,6 @@
 
 import pandas as pd
-# pyrefly: ignore[missing-import]
 import streamlit as st
-# pyrefly: ignore[missing-import]
 import google.generativeai as genai
 from function import *
 
@@ -18,18 +16,21 @@ if upload_file is not None:
     st.success("Tải dữ liệu thành công !")
 
     df = load_excel(upload_file)
-    if df is not None:
+    if df is not None: #Tránh bug khi không load được file lên df
         df_sorted = df_sorted_product(df)
         fig = bieudo_cot(df_sorted)
         st.pyplot(fig)
 
+        df_sorted.to_excel("revenue_report.xlsx", engine="openpyxl", index=False)
+        #tạo file báo cáo excel  
+            
         st.subheader("🤖 AI Phân Tích & Gợi Ý Nhập Hàng")
-        # Tạo nút bấm để tránh việc API bị gọi liên tục mỗi khi giao diện reload
+        # Tạo nút bấm 
         if st.button("Phân tích dữ liệu ngay", type="primary"):
             with st.spinner("AI đang phân tích luồng dữ liệu, xin chờ trong vài phút..."):
                 ai_insight = chatbot_recomment(df_sorted.head(10))
                 
-                # Hiển thị kết quả trong một khung thông báo nổi bật
+                #Xuất kết quả
                 st.info(ai_insight)
     else:
         st.error("Quá trình tải lên bị lỗi")
